@@ -55,7 +55,21 @@ test_generator = test_datagen.flow_from_directory(
 )
 
 # Budowa sieci neuronowej
-model = tf.keras.models.load_model("plant_classifier.h5")
+model = Sequential([
+    Conv2D(32, (3, 3), activation="relu", input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+    MaxPooling2D((2, 2)),
+
+    Conv2D(64, (3, 3), activation="relu"),
+    MaxPooling2D((2, 2)),
+
+    Conv2D(128, (3, 3), activation="relu"),
+    MaxPooling2D((2, 2)),
+
+    Flatten(),
+    Dropout(0.5),
+    Dense(128, activation="relu"),
+    Dense(NUM_CLASSES, activation="softmax"),
+])
 
 # Kompilacja modelu
 model.compile(
